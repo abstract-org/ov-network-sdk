@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+        <title>Token Transactions Chart</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+
+        <style>
+            /*... any existing styles ...*/
+        </style>
+    </head>
+    <title>Token Pairs Data</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head><div id="pagination"></div>
+<body>
+    <div style="margin-top: 50px;">
+        <h2>Token Transaction Frequencies</h2>
+        <canvas id="tokenTransactionChart" width="800" height="400"></canvas>
+    </div>
+    <h2>Token Data</h2>
+    <table id="tokenDataTable">
+        <thead>
+            <tr>
+                <th>Content</th>
+                <th>Token Address</th>
+                <th>Creator Address</th>
+                <th>Current Price ETH</th>
+                <th>Current Price USD</th>
+                <th>Reserve ETH</th>
+                <th>Reserve Token</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h2>Token Pairs Data</h2>
+    <table id="tokenPairsTable">
+        <thead>
+            <tr>
+                <th>Pair Address</th>
+                <th>TVL</th>
+                <th>Token 0</th>
+                <th>Token 1</th>
+                <th>Reserve 0</th>
+                <th>Reserve 1</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script src="bundle.js"></script>
+    <script>
+//OVsdk.populateTables();
+OVsdk.plotTokenPricesOverTimeFromJSON(); 
+    </script>
+    
+</body>
+</html>

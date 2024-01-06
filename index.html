@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Buy Tokens and Add Liquidity Example</title>
+</head>
+<body>
+  <h1>Buy Tokens and Add Liquidity Example</h1>
+
+  <button id="connectButton">Connect MetaMask</button>
+
+
+  <label for="content">Content:</label><br>
+  <input type="text" id="content"><br>
+  <label for="amount">Amount:</label><br>
+  <input type="text" id="amount"><br>
+
+  
+  <button id="createTokenAndAddLiquidityButton" >Create Token And Add Liquidity</button>
+  
+
+  <label for="tokenAAddress">TokenA Address:</label><br>
+  <input type="text" id="tokenAAddress"><br>
+  <label for="tokenAAmount">TokenA Amount:</label><br>
+  <input type="number" id="tokenAAmount"><br>
+  <label for="tokenBAmount">TokenB Amount:</label><br>
+  <input type="number" id="tokenBAmount"><br>
+
+  <label for="tokenBAddress">TokenB Address:</label><br>
+  <input type="text" id="tokenBAddress"><br>
+
+  <button id="buyAndAddLiquidityButton" >Buy Tokens and Add Liquidity</button>
+  <br><br>
+  <label for="token0Address">Token0 Address:</label><br>
+  <input type="text" id="token0Address"><br>
+  <label for="token1Address">Token1 Address:</label><br>
+  <input type="text" id="token1Address"><br>
+  <button id="createTokenPairButton" >Create TokenPair</button>
+  <br><br>
+  <label for="Token0Address">Token0 Address:</label><br>
+  <input type="text" id="Token0Address"><br>
+  <label for="Token1Address">Token1 Address:</label><br>
+  <input type="text" id="Token1Address"><br>
+  <label for="Token0Amount">Token0 Amount:</label><br>
+  <input type="number" id="Token0Amount"><br>
+  <label for="Token1Amount">Token1 Amount:</label><br>
+  <input type="text" id="Token1Amount"><br>
+  <label for="Token3Address">slippage:</label><br>
+  <input type="text" id="Token3Address"><br>
+  <button id="addLiquiditytoPairButton" >add liquidity</button>
+  <br><br>
+  
+  <label for="pairTokenAddress1">Pair Token Address 1:</label><br>
+  <input type="text" id="pairTokenAddress1"><br>
+  <label for="pairTokenAddress2">Pair Token Address 2:</label><br>
+  <input type="text" id="pairTokenAddress2"><br>
+  <button id="getPairDetailsButton" >Get Pair Details</button>
+  <button onclick="addNetworkWrapper()">Add GETH Network</button>
+  <button onclick="addNetworkWrapper2()">Add TESTNET Network</button>
+  <button onclick="requestAllowanceWrapper()">Faucet</button>
+  <button onclick="balanceWrapper()">Get Balance</button>
+  <button onclick="blockWrapper()">Get block</button>
+  <script src="bundle.js"></script>
+  <script>
+    OVsdk.monitorNetworkChanges();
+    OVsdk.monitorMetaMaskDisconnection();
+    OVsdk.checkCurrentNetwork().then((result) => {
+    if (result.status === '200') {
+    //  console.log(result.message);
+      OVsdk.setDatabaseURL(result.selectedNetwork); // this sets the database URL based on the network
+    } else {
+      console.warn(result.message);
+      // this handles cases where the network is not supported by us
+    }
+    });
+
+    OVsdk.events.addEventListener('databaseStatus', (e) => {
+      console.log(`database: ${e.detail}`);
+    });
+    
+    OVsdk.getCurrentDatabase();
+
+    OVsdk.events.addEventListener('MetaMaskDisconnected', (e) => {
+    console.log(`MetaMaskDisconnected: ${e.detail}`);
+    });
+
+    OVsdk.events.addEventListener('networkChange', (e) => {
+      console.log(`network switch success: ${e.detail}`); 
+    });
+
+    OVsdk.events.addEventListener('networkStatus', (e) => {
+      console.log(`network status: ${e.detail}`); 
+    });
+    
+    OVsdk.events.addEventListener('networkNotConnected', (e) => {
+    console.log(`network not connected: ${e.detail}`); 
+    });
+
+    OVsdk.events.addEventListener('unsupportedNetwork', (e) => {
+    console.log(`network not supported: ${e.detail}`); 
+    });
+
+    OVsdk.events.addEventListener('blockchainConnected', (e) => {
+      console.log(`connection success: ${e.detail}`); 
+    });
+
+    OVsdk.events.addEventListener('status', (e) => {
+    console.log(`Status: ${e.detail}`);
+    });
+
+    OVsdk.events.addEventListener('transactionData', (e) => {
+        console.log(`Transaction: ${e.detail}`);
+    });
+
+    OVsdk.events.addEventListener('receipt', (e) => {
+        console.log(`Receipt: ${e.detail}`);
+    });
+
+    OVsdk.events.addEventListener('error', (e) => {
+        console.log(`Error: ${e.detail}`);
+    });
+    
+    async function addNetworkWrapper() {
+      try {
+        const result = await OVsdk.getQuests();
+        console.log(result);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    
+async function addNetworkWrapper2() {
+try {
+  const result = await OVsdk.transformTokenStatsToQuestsFormat();
+  console.log(result);
+} catch (error) {
+  console.error('Error:', error);
+}
+}
+
+async function requestAllowanceWrapper() {
+try {
+  const result = await OVsdk.getQuestEstimate('tokenaddress',5000);
+  console.log('Status:', result.status, 'Data:', result.data);
+} catch (error) {
+  console.error('Error:', error);
+}
+}
+
+async function balanceWrapper() {
+    try {
+        const result = await OVsdk.upkeep('tokenaddress');
+        console.log(result);
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
+
+
+
+
+    async function blockWrapper() {
+      try {
+        const response = await OVsdk.findArbitrageOpportunities();
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error.data);
+        console.log(error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const connectButton = document.getElementById("connectButton");
+      const buyAndAddLiquidityButton = document.getElementById("buyAndAddLiquidityButton");
+      const getPairDetailsButton = document.getElementById("getPairDetailsButton");
+      const createTokenPairButton = document.getElementById("createTokenPairButton");
+      const addLiquiditytoPairButton = document.getElementById("addLiquiditytoPairButton");
+      const createTokenAndAddLiquidityButton = document.getElementById("createTokenAndAddLiquidityButton");
+
+      connectButton.addEventListener("click", async () => {
+    try {
+        await OVsdk.connectMetamask();
+        alert("Connected to MetaMask!");
+    } catch (error) {
+        alert(`Failed to connect to MetaMask: ${error.message}`);
+    }
+});
+
+      createTokenPairButton.addEventListener("click", async () => {
+  try {
+    const Token0Address = document.getElementById("token0Address").value;
+    const Token1Address = document.getElementById("token1Address").value;
+
+    const pair = await OVsdk.createPair(Token0Address, Token1Address);
+
+  } catch (error) {
+    alert(`Failed to create pair: ${error.message}`);
+  }
+});
+
+
+createTokenAndAddLiquidityButton.addEventListener("click", async () => {
+        try {
+          const content = document.getElementById("content").value;
+          const amount = document.getElementById("amount").value;
+          const result = await OVsdk.quest(content, amount);
+
+        } catch (error) {
+          alert(`Failed to create token and add liquidity: ${error.message}`);
+        }
+      });
+
+      
+
+addLiquiditytoPairButton.addEventListener("click", async () => {
+  try {
+    const Token0Address = document.getElementById("Token0Address").value;
+    const Token1Address = document.getElementById("Token1Address").value;
+    const Token0Amount = document.getElementById("Token0Amount").value;
+    const Token1Amount = document.getElementById("Token1Amount").value;
+
+
+    const liquid = await OVsdk.valuelink(Token0Address, Token1Address, Token0Amount, Token1Amount);
+console.log(liquid);
+  } catch (error) {
+    alert(`Failed to add liquidity: ${error.message}`);
+  }
+});
+
+      buyAndAddLiquidityButton.addEventListener("click", async () => {
+        try {
+          const tokenAAddress = document.getElementById("tokenAAddress").value;
+          const tokenAAmount = document.getElementById("tokenAAmount").value;
+
+          const result = await OVsdk.sell(tokenAAddress, tokenAAmount);
+
+        } catch (error) {
+          alert(`Failed to buy tokens and add liquidity: ${error.message}`);
+        }
+      });
+
+      getPairDetailsButton.addEventListener("click", async () => {
+  try {
+    const pairTokenAddress1 = document.getElementById("pairTokenAddress1").value;
+    const pairTokenAddress2 = document.getElementById("pairTokenAddress2").value;
+  //  const tokenAAddress = document.getElementById("tokenAAddress").value;
+
+    const pairDetails = await OVsdk.getPairDetailsOnChain(pairTokenAddress1, pairTokenAddress2);
+
+    alert(`Pair Details:\nToken 0: ${pairDetails.token0Address} ${pairDetails.token0Name} ${pairDetails.token0Symbol} Reserve: ${pairDetails.reserve0Real}\nToken 1: ${pairDetails.token1Address} ${pairDetails.token1Name} ${pairDetails.token1Symbol} Reserve: ${pairDetails.reserve1Real}`);
+  } catch (error) {
+    alert(`Failed to get pair details: ${error.message}`);
+  }
+});
+    });
+  </script>
+</body>
+</html>

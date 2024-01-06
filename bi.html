@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+</head>
+<body>
+<head>
+    <title>Token Transactions Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+    <script src="bundle.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        button, select {
+            padding: 10px 20px;
+            background-color: #000000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        button:hover, select:hover {
+            background-color: #000000;
+        }
+
+        a.token-link {
+            color: blue;
+            text-decoration: none;
+        }
+
+        a.token-link:hover {
+            text-decoration: underline;
+        }
+
+        .toggle-button {
+    padding: 10px 20px;
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+.toggle-button.active {
+    background-color: #ac3c54;
+    color: white;
+}
+
+    </style>
+</head>
+</head>
+<body>
+    <div class="container">
+        <!-- Toggle switch for choosing the data source -->
+  
+        <div id="networkInfo" class="network-info">
+            <h3>Current Network: <span id="currentNetwork">-</span></h3>
+            <div>
+                <select id="networkSelection">
+                    <option value="sepolia">Sepolia</option>
+                    <option value="goerli">Goerli</option>
+                </select>
+                <button onclick="OVsdk.connectToBI()">Connect to Selected Network</button>
+            </div>
+        </div>
+        <div id="walletInfo" style="display: none;">
+            <p>Address: <span id="walletAddress">-</span></p>
+            <p>Balance: <span id="walletBalance">-</span> ETH</p>
+        </div>
+<body>
+    <canvas id="tokenTransactionChart" width="800" height="400"></canvas>
+    <label class="switch">
+        <input type="checkbox" id="dataToggle">
+
+    </label>
+    <span id="toggleLabel">Use Wallet Data</span>
+    <button onclick="plotBasedOnToggle()">Generate Chart</button>
+    <button id="toggleView" onclick="OVsdk.toggleChartView()">Toggle to Hourly Detailed</button>
+    <select id="sortSelector">
+        <option value="price">Sort by Price</option>
+        <option value="alphabetical">Sort Alphabetically</option>
+        <option value="valuelinksLength">Sort by Valuelinks Length</option>
+    </select>
+    <h2>Token Transaction Frequencies</h2>
+
+    <h2>Token Data</h2>
+    <table id="tokenDataTable">
+        <thead>
+            <tr>
+                <th>Content</th>
+                <th>Token Address</th>
+                <th>Creator Address</th>
+                <th>Current Price ETH</th>
+                <th>Current Price USD</th>
+                <th>Reserve ETH</th>
+                <th>Reserve Token</th>
+                <th>Balance</th>
+                <th># of Pairs</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <h2>Token Pairs Data</h2>
+    <table id="tokenPairsTable">
+        <thead>
+            <tr>
+                <th>Pair Address</th>
+                <th>TVL</th>
+                <th>Token 0</th>
+                <th>Token 1</th>
+                <th>Reserve 0</th>
+                <th>Reserve 1</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+        if (window.ethereum) {
+    window.ethereum.on('chainChanged', (_) => {
+        window.location.reload();
+    });
+}
+
+    document.addEventListener('DOMContentLoaded', setInitialNetworkDisplay);
+
+    async function setInitialNetworkDisplay() {
+        const { network } = await OVsdk.initializeProviderFromCurrentNetwork();
+        document.getElementById('networkSelection').value = network;
+        document.getElementById('currentNetwork').textContent = network;
+    }
+    document.getElementById('dataToggle').addEventListener('change', function() {
+    const isChecked = this.checked;
+    if (isChecked) {
+        document.getElementById('toggleLabel').textContent = "Network Data";
+    } else {
+        document.getElementById('toggleLabel').textContent = "Wallet Data";
+    }
+});
+    
+function plotBasedOnToggle() {
+    const isWalletData = document.getElementById('dataToggle').checked;
+    if (isWalletData) {
+        OVsdk.plotTokenPricesUnifiedWallet();
+    } else {
+        OVsdk.plotTokenPricesUnified();
+    }
+}
+
+
+                        // Add event listener for the toggle switch to update the label text
+                        document.getElementById('dataToggle').addEventListener('change', function() {
+                document.getElementById('toggleLabel').textContent = this.checked ? 'Use Wallet Data' : 'Use Network Data';
+            });
+
+    document.getElementById('sortSelector').addEventListener('change', function() {
+        const sortBy = this.value;
+        const tbody = document.getElementById('tokenDataTable').querySelector('tbody');
+        const rows = Array.from(tbody.rows);
+    
+        // Compare function for sorting
+        let compare;
+        if (sortBy === 'price') {
+            compare = (rowA, rowB) => {
+                const priceA = parseFloat(rowA.cells[3].textContent); // assuming current price in ETH is in the 4th column
+                const priceB = parseFloat(rowB.cells[3].textContent);
+                return priceB - priceA; // for descending order
+            }
+        } else if (sortBy === 'alphabetical') {
+            compare = (rowA, rowB) => {
+                const contentA = rowA.cells[0].textContent.toLowerCase(); // assuming content is in the 1st column
+                const contentB = rowB.cells[0].textContent.toLowerCase();
+                if (contentA < contentB) return -1;
+                if (contentA > contentB) return 1;
+                return 0;
+            }
+        } else if (sortBy === 'valuelinksLength') {
+            compare = (rowA, rowB) => {
+                const lengthA = parseInt(rowA.cells[8].textContent, 10); // assuming valuelinks length is in the 8th column
+                const lengthB = parseInt(rowB.cells[8].textContent, 10);
+                return lengthB - lengthA; // for descending order
+            }
+        }
+    
+        // Sort the rows and re-append to tbody
+        rows.sort(compare).forEach(row => tbody.appendChild(row));
+    });
+    </script>
+
+</body>
+
+</html>

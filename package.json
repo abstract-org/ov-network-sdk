@@ -1,0 +1,21 @@
+{
+  "name": "ov-network-sdk",
+  "version": "1.2.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "ethers": "^5.4.6",
+    "rollup": "^3.29.2",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-polyfills": "^0.2.1"
+  },
+  "dependencies": {
+    "@rollup/plugin-json": "^6.0.0"
+  }
+}

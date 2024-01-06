@@ -1,0 +1,10 @@
+node_modules
+data2Server.js
+external_api_calls/apiKeys.js
+bundle.js
+bundle.js.map
+ov.json
+token_prices.json
+rollup.config.mjs
+json
+.vscode
