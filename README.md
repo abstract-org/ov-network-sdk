@@ -1,13 +1,15 @@
+```
  ██████╗ ██████╗ ███████╗███╗   ██╗██╗   ██╗ █████╗ ██╗     ██╗   ██╗███████╗
 ██╔═══██╗██╔══██╗██╔════╝████╗  ██║██║   ██║██╔══██╗██║     ██║   ██║██╔════╝
 ██║   ██║██████╔╝█████╗  ██╔██╗ ██║██║   ██║███████║██║     ██║   ██║█████╗  
 ██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║╚██╗ ██╔╝██╔══██║██║     ██║   ██║██╔══╝  
 ╚██████╔╝██║     ███████╗██║ ╚████║ ╚████╔╝ ██║  ██║███████╗╚██████╔╝███████╗
  ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚══════╝
+```
 
 
 
-
+# OV Network SDK
 
 ## Introduction
 This repository is an open-source project aimed at building a decentralized exchange with Automated Market Maker (AMM) and unique token/pool creation capabilities. It is setup to run on Ethereum and is configured on Mainnet, Sepolia Testnet, Goerli Testnet (deprecated), and a private GETH NODE. 
