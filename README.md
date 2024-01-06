@@ -13,7 +13,7 @@
 This repository is an open-source project aimed at building a decentralized exchange with Automated Market Maker (AMM) and unique token/pool creation capabilities. It is setup to run on Ethereum and is configured on Mainnet, Sepolia Testnet, Goerli Testnet (deprecated), and a private GETH NODE. 
 
 ## Features
-- **Automated Market Maker (AMM):** Utilizing the existing Uniswap V2 router contract 
+- **Automated Market Maker (AMM):** Utilizing the existing Uniswap V2 router contract. 
 - **Token/Pool Creation:** Tools and utilities to create unique tokens and liquidity pools.
 - **Decentralized Exchange Components:** Core components to help developers build their own DEX platforms.
 
@@ -36,18 +36,16 @@ To get started with the OV Network SDK, you will need to clone the repository an
 
 
 
-CURRENTLY USED CONTRACT INFORMATION IN DEPLOYED ENVIRONMENT:
-
- MAINNET CONTRACT ADDRESSES
+ ##MAINNET CONTRACT ADDRESSES
  --------------------------
- ovTOKEN: 0x3BA98B3766b661D1dd1f912A75E2aAc92FFc84eF
- ovPOOL: 0x5587a86C580E04D6157c84FD85758AccbA0b7934
- ovSWAP: 0x7f7429e3cc6FB90238c86B9546c26c59F1baf868
+ - ovTOKEN: 0x3BA98B3766b661D1dd1f912A75E2aAc92FFc84eF
+ - ovPOOL: 0x5587a86C580E04D6157c84FD85758AccbA0b7934
+ - ovSWAP: 0x7f7429e3cc6FB90238c86B9546c26c59F1baf868
 
- TESTNET [sepolia] CONTRACT ADDRESSES
+ ##TESTNET [sepolia] CONTRACT ADDRESSES
  ------------------------------------
- ovTOKEN: 0xec81C83fE9c78B1FDB6F76BB3bB260E6DBE6C66B
- ovPOOL: 0xb3a438972136aca2f4c910d4238ef7e2eec37880
- ovSWAP: 0x5A6e4F0059d8B586FDe7C3e9F63F368F91fDc774
- uniROUTER: 0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008
- WETH: 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9
+ - ovTOKEN: 0xec81C83fE9c78B1FDB6F76BB3bB260E6DBE6C66B
+ - ovPOOL: 0xb3a438972136aca2f4c910d4238ef7e2eec37880
+ - ovSWAP: 0x5A6e4F0059d8B586FDe7C3e9F63F368F91fDc774
+ - uniROUTER: 0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008
+ - WETH: 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9
